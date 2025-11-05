@@ -1,56 +1,58 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { Header } from '@/app/components';
-import { Order, OrderItem, Product, Customer } from '@/app/types';
+import { useSearchParams } from "next/navigation";
+import { connection } from "next/server";
+import { useEffect } from "react";
+import { Header } from "@/app/components";
+import type { Order } from "@/app/types";
 
-const ConfirmationPage = () => {
+const ConfirmationPage = async () => {
+  await connection();
   const searchParams = useSearchParams();
 
-  const orderNumber = searchParams.get('orderNumber') || 'ORD-DEMO-001';
-  const referrerId = searchParams.get('referrerId') || undefined;
+  const orderNumber = searchParams.get("orderNumber") || "ORD-DEMO-001";
+  const referrerId = searchParams.get("referrerId") || undefined;
 
   // Mock order data
   const mockOrder: Order = {
     orderNumber,
     customer: {
-      name: 'Jane Doe',
-      email: 'jane.doe@example.com',
-      phone: '+44 7700 900000',
+      name: "Jane Doe",
+      email: "jane.doe@example.com",
+      phone: "+44 7700 900000",
       address: {
-        street: '123 Running Lane',
-        city: 'London',
-        postalCode: 'SW1A 1AA',
-        country: 'United Kingdom'
-      }
+        street: "123 Running Lane",
+        city: "London",
+        postalCode: "SW1A 1AA",
+        country: "United Kingdom",
+      },
     },
     items: [
       {
         product: {
-          id: 'APOLLO-RUNNING-SHIRT-01',
-          name: 'Performance Running Shirt',
-          brand: 'Apollo Sportswear',
+          id: "APOLLO-RUNNING-SHIRT-01",
+          name: "Performance Running Shirt",
+          brand: "Apollo Sportswear",
           price: 29.99,
           originalPrice: 39.99,
           rating: 4.8,
           reviewCount: 342,
-          image: '/product-image.jpg',
-          features: ['Moisture-wicking', 'Breathable', 'Quick-dry'],
-          description: 'High-performance running shirt'
+          image: "/product-image.jpg",
+          features: ["Moisture-wicking", "Breathable", "Quick-dry"],
+          description: "High-performance running shirt",
         },
-        quantity: 1
-      }
+        quantity: 1,
+      },
     ],
     total: 29.99,
     orderDate: new Date(),
-    referrerId
+    referrerId,
   };
 
   // Load MentionMe order tag dynamically
   useEffect(() => {
-    const firstname = mockOrder.customer.name.split(' ')[0];
-    const surname = mockOrder.customer.name.split(' ')[1] || '';
+    const firstname = mockOrder.customer.name.split(" ")[0];
+    const surname = mockOrder.customer.name.split(" ")[1] || "";
     const firstItem = mockOrder.items[0];
 
     const params = new URLSearchParams({
@@ -60,15 +62,15 @@ const ConfirmationPage = () => {
       signup_id: mockOrder.customer.email,
       order_id: mockOrder.orderNumber,
       transaction_total: mockOrder.total.toFixed(2),
-      transaction_currency: 'GBP',
+      transaction_currency: "GBP",
       product_sku_1: firstItem.product.id,
       product_qty_1: firstItem.quantity.toString(),
-      situation: 'postpurchase',
-      locale: 'en_GB'
+      situation: "postpurchase",
+      locale: "en_GB",
     });
 
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
+    const script = document.createElement("script");
+    script.type = "text/javascript";
     script.src = `https://tag-demo.mention-me.com/api/v2/order/mm1c6ad7e0?${params.toString()}`;
     document.body.appendChild(script);
 
@@ -93,12 +95,26 @@ const ConfirmationPage = () => {
             {/* Success Header with Green Background */}
             <div className="bg-gradient-to-br from-green-500 to-green-600 text-white text-center py-12 px-6">
               <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full mb-4 animate-scale-in">
-                <svg className="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-12 h-12 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
-              <h1 className="text-3xl font-bold mb-2">Thank You for Your Order!</h1>
-              <p className="text-lg opacity-90">Your order has been confirmed</p>
+              <h1 className="text-3xl font-bold mb-2">
+                Thank You for Your Order!
+              </h1>
+              <p className="text-lg opacity-90">
+                Your order has been confirmed
+              </p>
             </div>
 
             {/* Confirmation Body */}
@@ -107,24 +123,36 @@ const ConfirmationPage = () => {
               <div className="bg-gray-50 rounded-lg p-6 mb-6">
                 <div className="space-y-4">
                   <div className="flex justify-between py-3 border-b border-gray-200">
-                    <span className="font-semibold text-gray-700">Order Number</span>
-                    <span className="text-gray-900 font-medium">{mockOrder.orderNumber}</span>
+                    <span className="font-semibold text-gray-700">
+                      Order Number
+                    </span>
+                    <span className="text-gray-900 font-medium">
+                      {mockOrder.orderNumber}
+                    </span>
                   </div>
                   <div className="flex justify-between py-3 border-b border-gray-200">
-                    <span className="font-semibold text-gray-700">Customer</span>
-                    <span className="text-gray-900">{mockOrder.customer.name}</span>
+                    <span className="font-semibold text-gray-700">
+                      Customer
+                    </span>
+                    <span className="text-gray-900">
+                      {mockOrder.customer.name}
+                    </span>
                   </div>
                   <div className="flex justify-between py-3 border-b border-gray-200">
                     <span className="font-semibold text-gray-700">Email</span>
-                    <span className="text-gray-900">{mockOrder.customer.email}</span>
+                    <span className="text-gray-900">
+                      {mockOrder.customer.email}
+                    </span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="font-semibold text-gray-700">Order Date</span>
+                    <span className="font-semibold text-gray-700">
+                      Order Date
+                    </span>
                     <span className="text-gray-900">
-                      {mockOrder.orderDate.toLocaleDateString('en-GB', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
+                      {mockOrder.orderDate.toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
                       })}
                     </span>
                   </div>
@@ -133,17 +161,28 @@ const ConfirmationPage = () => {
 
               {/* Order Items */}
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Order Items</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Order Items
+                </h2>
                 <div className="space-y-4">
                   {mockOrder.items.map((item, index) => (
-                    <div key={index} className="flex gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div
+                      key={index}
+                      className="flex gap-4 p-4 bg-gray-50 rounded-lg"
+                    >
                       <div className="w-16 h-16 bg-gradient-to-br from-gray-800 to-gray-600 rounded flex-shrink-0 flex items-center justify-center text-white text-2xl">
                         ⚡
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">{item.product.name}</h3>
-                        <p className="text-sm text-gray-600">SKU: {item.product.id}</p>
-                        <p className="text-sm text-gray-700 mt-1">Quantity: {item.quantity}</p>
+                        <h3 className="font-semibold text-gray-900">
+                          {item.product.name}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          SKU: {item.product.id}
+                        </p>
+                        <p className="text-sm text-gray-700 mt-1">
+                          Quantity: {item.quantity}
+                        </p>
                       </div>
                       <div className="text-right font-bold text-gray-900">
                         £{item.product.price.toFixed(2)}
@@ -161,19 +200,28 @@ const ConfirmationPage = () => {
 
               {/* What's Next Section */}
               <div className="bg-gray-100 rounded-lg p-6 mb-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">📦 What&apos;s Next?</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  📦 What&apos;s Next?
+                </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <span className="text-gray-900 font-bold mr-3">→</span>
-                    <span className="text-gray-700">You&apos;ll receive an order confirmation email shortly</span>
+                    <span className="text-gray-700">
+                      You&apos;ll receive an order confirmation email shortly
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-gray-900 font-bold mr-3">→</span>
-                    <span className="text-gray-700">We&apos;ll send you shipping updates as your order is processed</span>
+                    <span className="text-gray-700">
+                      We&apos;ll send you shipping updates as your order is
+                      processed
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-gray-900 font-bold mr-3">→</span>
-                    <span className="text-gray-700">Expected delivery: 3-5 business days</span>
+                    <span className="text-gray-700">
+                      Expected delivery: 3-5 business days
+                    </span>
                   </li>
                 </ul>
               </div>

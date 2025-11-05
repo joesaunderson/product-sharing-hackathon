@@ -1,45 +1,48 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { Header, OrderSummary } from '@/app/components';
-import { CheckoutFormData, OrderItem, Product } from '@/app/types';
+import { useRouter, useSearchParams } from "next/navigation";
+import { connection } from "next/server";
+import { useState } from "react";
+import { Header } from "@/app/components";
+import type { CheckoutFormData, OrderItem, Product } from "@/app/types";
 
 // Mock product data
 const MOCK_PRODUCTS: Record<string, Product> = {
-  'apollo-running-shirt': {
-    id: 'apollo-running-shirt',
-    name: 'Performance Running Shirt',
-    brand: 'Apollo',
+  "apollo-running-shirt": {
+    id: "apollo-running-shirt",
+    name: "Performance Running Shirt",
+    brand: "Apollo",
     price: 29.99,
     rating: 4.5,
     reviewCount: 128,
-    image: '/product-placeholder.jpg',
-    features: ['Moisture-wicking', 'Lightweight', 'Quick-dry'],
-    description: 'High-performance running shirt for athletes',
+    image: "/product-placeholder.jpg",
+    features: ["Moisture-wicking", "Lightweight", "Quick-dry"],
+    description: "High-performance running shirt for athletes",
   },
-  'apollo-training-shorts': {
-    id: 'apollo-training-shorts',
-    name: 'Training Shorts',
-    brand: 'Apollo',
+  "apollo-training-shorts": {
+    id: "apollo-training-shorts",
+    name: "Training Shorts",
+    brand: "Apollo",
     price: 34.99,
     rating: 4.7,
     reviewCount: 95,
-    image: '/product-placeholder.jpg',
-    features: ['Breathable', 'Elastic waist', 'Multiple pockets'],
-    description: 'Comfortable training shorts for any workout',
+    image: "/product-placeholder.jpg",
+    features: ["Breathable", "Elastic waist", "Multiple pockets"],
+    description: "Comfortable training shorts for any workout",
   },
 };
 
-const CheckoutPage = () => {
+const CheckoutPage = async () => {
+  await connection();
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const productId = searchParams.get('productId') || 'apollo-running-shirt';
-  const referrerId = searchParams.get('referrerId') || '';
+  const productId = searchParams.get("productId") || "apollo-running-shirt";
+  const referrerId = searchParams.get("referrerId") || "";
 
   // Get product data
-  const product = MOCK_PRODUCTS[productId] || MOCK_PRODUCTS['apollo-running-shirt'];
+  const product =
+    MOCK_PRODUCTS[productId] || MOCK_PRODUCTS["apollo-running-shirt"];
 
   // Create order item
   const orderItem: OrderItem = {
@@ -51,28 +54,29 @@ const CheckoutPage = () => {
 
   // Form state with pre-filled demo data
   const [formData, setFormData] = useState<CheckoutFormData>({
-    email: 'jane@example.com',
-    firstName: 'Jane',
-    lastName: 'Doe',
-    address: '123 Demo Street',
-    city: 'London',
-    postcode: 'SW1A 1AA',
-    cardNumber: '4242 4242 4242 4242',
-    expiry: '12/25',
-    cvv: '123',
+    email: "jane@example.com",
+    firstName: "Jane",
+    lastName: "Doe",
+    address: "123 Demo Street",
+    city: "London",
+    postcode: "SW1A 1AA",
+    cardNumber: "4242 4242 4242 4242",
+    expiry: "12/25",
+    cvv: "123",
   });
 
-  const handleInputChange = (field: keyof CheckoutFormData) => (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFormData({ ...formData, [field]: e.target.value });
-  };
+  const handleInputChange =
+    (field: keyof CheckoutFormData) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData({ ...formData, [field]: e.target.value });
+    };
 
   const handleCompletePurchase = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Generate order number
-    const orderNumber = 'ORD-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    const orderNumber =
+      "ORD-" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
     // Navigate to confirmation page
     const params = new URLSearchParams({
@@ -89,10 +93,7 @@ const CheckoutPage = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
-          <a
-            href="/"
-            className="text-black hover:underline text-sm"
-          >
+          <a href="/" className="text-black hover:underline text-sm">
             ← Back to Products
           </a>
         </div>
@@ -121,7 +122,7 @@ const CheckoutPage = () => {
                         type="email"
                         id="email"
                         value={formData.email}
-                        onChange={handleInputChange('email')}
+                        onChange={handleInputChange("email")}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
                         required
                       />
@@ -147,7 +148,7 @@ const CheckoutPage = () => {
                           type="text"
                           id="firstName"
                           value={formData.firstName}
-                          onChange={handleInputChange('firstName')}
+                          onChange={handleInputChange("firstName")}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
                           required
                         />
@@ -163,7 +164,7 @@ const CheckoutPage = () => {
                           type="text"
                           id="lastName"
                           value={formData.lastName}
-                          onChange={handleInputChange('lastName')}
+                          onChange={handleInputChange("lastName")}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
                           required
                         />
@@ -180,7 +181,7 @@ const CheckoutPage = () => {
                         type="text"
                         id="address"
                         value={formData.address}
-                        onChange={handleInputChange('address')}
+                        onChange={handleInputChange("address")}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
                         required
                       />
@@ -197,7 +198,7 @@ const CheckoutPage = () => {
                           type="text"
                           id="city"
                           value={formData.city}
-                          onChange={handleInputChange('city')}
+                          onChange={handleInputChange("city")}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
                           required
                         />
@@ -213,7 +214,7 @@ const CheckoutPage = () => {
                           type="text"
                           id="postcode"
                           value={formData.postcode}
-                          onChange={handleInputChange('postcode')}
+                          onChange={handleInputChange("postcode")}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
                           required
                         />
@@ -239,7 +240,7 @@ const CheckoutPage = () => {
                         type="text"
                         id="cardNumber"
                         value={formData.cardNumber}
-                        onChange={handleInputChange('cardNumber')}
+                        onChange={handleInputChange("cardNumber")}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
                         placeholder="4242 4242 4242 4242"
                         required
@@ -257,7 +258,7 @@ const CheckoutPage = () => {
                           type="text"
                           id="expiry"
                           value={formData.expiry}
-                          onChange={handleInputChange('expiry')}
+                          onChange={handleInputChange("expiry")}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
                           placeholder="MM/YY"
                           required
@@ -274,7 +275,7 @@ const CheckoutPage = () => {
                           type="text"
                           id="cvv"
                           value={formData.cvv}
-                          onChange={handleInputChange('cvv')}
+                          onChange={handleInputChange("cvv")}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
                           placeholder="123"
                           maxLength={4}
@@ -304,7 +305,9 @@ const CheckoutPage = () => {
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-5">
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-black mb-6">Order Summary</h2>
+              <h2 className="text-2xl font-bold text-black mb-6">
+                Order Summary
+              </h2>
 
               {/* Product Item */}
               <div className="mb-6 p-4 bg-gray-50 rounded-lg">
@@ -313,8 +316,12 @@ const CheckoutPage = () => {
                     ⚡
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-black">{orderItem.product.name}</p>
-                    <p className="text-sm text-gray-600">SKU: {orderItem.product.id}</p>
+                    <p className="font-semibold text-black">
+                      {orderItem.product.name}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      SKU: {orderItem.product.id}
+                    </p>
                     <p className="font-bold text-black mt-1">
                       ${orderItem.product.price.toFixed(2)}
                     </p>
