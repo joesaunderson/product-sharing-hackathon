@@ -131,7 +131,7 @@ const ProductPage = () => {
 
       {/* MentionMe Script */}
       <Script
-        src="https://tag-demo.mention-me.com/api/v2/referreroffer/mm1c6ad7e0?situation=product_page&implementation=link"
+        src="https://tag-staging2.mention-me.com/api/v2/referreroffer/mm1c6ad7e0?situation=product_page&implementation=link"
         strategy="afterInteractive"
       />
     </>
