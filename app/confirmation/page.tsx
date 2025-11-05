@@ -95,7 +95,7 @@ const ConfirmationPage = () => {
 
     const script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = `https://tag-staging2.mention-me.com/api/v2/order/mm1c6ad7e0?${params.toString()}`;
+    script.src = `https://tag-staging3.mention-me.com/api/v2/order/mm1c6ad7e0?${params.toString()}`;
     document.body.appendChild(script);
 
     return () => {
