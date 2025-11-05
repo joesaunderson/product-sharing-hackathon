@@ -36,18 +36,6 @@ const ProductPage = () => {
       <Header />
 
       <main className="max-w-6xl mx-auto px-4 py-8">
-        {referrerId && (
-          <div
-            id="mmReferrerBanner"
-            className="min-h-[60px] mb-4 flex flex-col items-center justify-center  rounded border border-green-950 bg-green-100 p-4"
-          >
-            <p>
-              <strong>🎉 Joe recommended this product!</strong>
-            </p>
-            <div id="mmRefereeWrapper"></div>
-          </div>
-        )}
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white rounded-lg shadow-lg p-8">
           {/* Product Image */}
           <div>
@@ -68,6 +56,7 @@ const ProductPage = () => {
               <h1 className="text-4xl font-bold text-black mb-2">
                 {product.name}
               </h1>
+
               <p className="text-gray-600 text-lg">{product.brand}</p>
             </div>
 
@@ -79,6 +68,16 @@ const ProductPage = () => {
                 ({product.reviewCount} reviews)
               </span>
             </div>
+            {referrerId && (
+              <div
+                id="mmReferrerBanner"
+                className="min-h-[30px] mb-4 flex flex-col items-center justify-center rounded border border-green-950 border-1 bg-green-200 p-2"
+              >
+                <p>
+                  <strong>🎉 Joe recommended this product!</strong>
+                </p>
+              </div>
+            )}
 
             <div className="flex gap-1">
               <div className="inline-block px-4 py-2 bg-gray-100 text-black rounded">

@@ -45,7 +45,8 @@ const ConfirmationPage = () => {
   const discountCode = searchParams.get("discountCode") || undefined;
 
   // Get product from mock data
-  const product = MOCK_PRODUCTS[productId] || MOCK_PRODUCTS["APOLLO-RUNNING-SHIRT-01"];
+  const product =
+    MOCK_PRODUCTS[productId] || MOCK_PRODUCTS["APOLLO-RUNNING-SHIRT-01"];
 
   // Order data using submitted form data
   const mockOrder: Order = {
@@ -206,6 +207,12 @@ const ConfirmationPage = () => {
                         <p className="text-sm text-gray-700 mt-1">
                           Quantity: {item.quantity}
                         </p>
+                        <a
+                          href="#123"
+                          className="text-md text-gray-700 mt-1 float-right"
+                        >
+                          Recommend to your friends: https://mention.me/XAD3afg2
+                        </a>
                       </div>
                       <div className="text-right font-bold text-gray-900">
                         £{item.product.price.toFixed(2)}
