@@ -4,12 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Script from "next/script";
-import { connection } from "next/server";
 import { Header } from "@/app/components";
 import type { Product } from "@/app/types";
 
 const ProductPage = async () => {
-  await connection();
   const searchParams = useSearchParams();
   const referrerId = searchParams.get("referrerId");
 

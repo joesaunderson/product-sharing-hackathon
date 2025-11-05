@@ -1,13 +1,11 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { connection } from "next/server";
 import { useEffect } from "react";
 import { Header } from "@/app/components";
 import type { Order } from "@/app/types";
 
 const ConfirmationPage = async () => {
-  await connection();
   const searchParams = useSearchParams();
 
   const orderNumber = searchParams.get("orderNumber") || "ORD-DEMO-001";

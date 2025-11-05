@@ -32,8 +32,7 @@ const MOCK_PRODUCTS: Record<string, Product> = {
   },
 };
 
-const CheckoutPage = async () => {
-  await connection();
+const CheckoutPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
