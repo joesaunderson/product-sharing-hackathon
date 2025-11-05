@@ -14,11 +14,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Apollo Performance Running Shirt - Premium Athletic Wear",
-  description: "Advanced moisture-wicking running shirt with breathable mesh panels, flatlock seams, and reflective elements. 5-star rated by 247+ customers. Only £29.99",
+  description:
+    "Advanced moisture-wicking running shirt with breathable mesh panels, flatlock seams, and reflective elements. 5-star rated by 247+ customers. Only £29.99",
   openGraph: {
     title: "Apollo Performance Running Shirt",
-    description: "Advanced moisture-wicking technology, breathable mesh panels, flatlock seams for comfort. 5★ (247 reviews)",
-    type: "product",
+    description:
+      "Advanced moisture-wicking technology, breathable mesh panels, flatlock seams for comfort. 5★ (247 reviews)",
     images: [
       {
         url: "/product-image.jpg",
@@ -32,7 +33,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Apollo Performance Running Shirt",
-    description: "Advanced moisture-wicking technology, breathable mesh panels, flatlock seams. 5★ (247 reviews) - £29.99",
+    description:
+      "Advanced moisture-wicking technology, breathable mesh panels, flatlock seams. 5★ (247 reviews) - £29.99",
     images: ["/product-image.jpg"],
   },
 };
