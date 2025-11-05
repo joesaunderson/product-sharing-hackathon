@@ -3,20 +3,56 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { Header } from "@/app/components";
-import type { Order } from "@/app/types";
+import type { Order, Product } from "@/app/types";
+
+// Mock product data
+const MOCK_PRODUCTS: Record<string, Product> = {
+  "apollo-running-shirt": {
+    id: "apollo-running-shirt",
+    name: "Performance Running Shirt",
+    brand: "Apollo",
+    price: 29.99,
+    rating: 4.5,
+    reviewCount: 128,
+    image: "/product-placeholder.jpg",
+    features: ["Moisture-wicking", "Lightweight", "Quick-dry"],
+    description: "High-performance running shirt for athletes",
+  },
+  "APOLLO-RUNNING-SHIRT-01": {
+    id: "APOLLO-RUNNING-SHIRT-01",
+    name: "Performance Running Shirt",
+    brand: "Apollo Sportswear",
+    price: 29.99,
+    originalPrice: 39.99,
+    rating: 4.8,
+    reviewCount: 342,
+    image: "/product-image.jpg",
+    features: ["Moisture-wicking", "Breathable", "Quick-dry"],
+    description: "High-performance running shirt",
+  },
+};
 
 const ConfirmationPage = () => {
   const searchParams = useSearchParams();
 
   const orderNumber = searchParams.get("orderNumber") || "ORD-DEMO-001";
   const referrerId = searchParams.get("referrerId") || undefined;
+  const email = searchParams.get("email") || "jane.doe@example.com";
+  const firstName = searchParams.get("firstName") || "Jane";
+  const lastName = searchParams.get("lastName") || "Doe";
+  const productId = searchParams.get("productId") || "APOLLO-RUNNING-SHIRT-01";
+  const total = parseFloat(searchParams.get("total") || "29.99");
+  const discountCode = searchParams.get("discountCode") || undefined;
 
-  // Mock order data
+  // Get product from mock data
+  const product = MOCK_PRODUCTS[productId] || MOCK_PRODUCTS["APOLLO-RUNNING-SHIRT-01"];
+
+  // Order data using submitted form data
   const mockOrder: Order = {
     orderNumber,
     customer: {
-      name: "Jane Doe",
-      email: "jane.doe@example.com",
+      name: `${firstName} ${lastName}`,
+      email: email,
       phone: "+44 7700 900000",
       address: {
         street: "123 Running Lane",
@@ -27,22 +63,11 @@ const ConfirmationPage = () => {
     },
     items: [
       {
-        product: {
-          id: "APOLLO-RUNNING-SHIRT-01",
-          name: "Performance Running Shirt",
-          brand: "Apollo Sportswear",
-          price: 29.99,
-          originalPrice: 39.99,
-          rating: 4.8,
-          reviewCount: 342,
-          image: "/product-image.jpg",
-          features: ["Moisture-wicking", "Breathable", "Quick-dry"],
-          description: "High-performance running shirt",
-        },
+        product,
         quantity: 1,
       },
     ],
-    total: 29.99,
+    total,
     orderDate: new Date(),
     referrerId,
   };

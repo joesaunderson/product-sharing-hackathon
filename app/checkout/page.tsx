@@ -53,7 +53,7 @@ const CheckoutPage = () => {
 
   // Form state with pre-filled demo data
   const [formData, setFormData] = useState<CheckoutFormData>({
-    email: "jane@example.com",
+    email: "",
     firstName: "Jane",
     lastName: "Doe",
     address: "123 Demo Street",
@@ -63,6 +63,18 @@ const CheckoutPage = () => {
     expiry: "12/25",
     cvv: "123",
   });
+
+  const [discountCode, setDiscountCode] = useState("");
+  const [appliedDiscountCode, setAppliedDiscountCode] = useState("");
+
+  // Calculate discount
+  const subtotal = orderItem.product.price * orderItem.quantity;
+  const discountAmount = appliedDiscountCode ? subtotal * 0.2 : 0;
+  const finalTotal = subtotal - discountAmount;
+
+  const handleApplyDiscount = () => {
+    setAppliedDiscountCode(discountCode);
+  };
 
   const handleInputChange =
     (field: keyof CheckoutFormData) =>
@@ -80,7 +92,13 @@ const CheckoutPage = () => {
     // Navigate to confirmation page
     const params = new URLSearchParams({
       orderNumber,
+      email: formData.email,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      productId,
+      total: finalTotal.toFixed(2),
       ...(referrerId && { referrerId }),
+      ...(appliedDiscountCode && { discountCode: appliedDiscountCode }),
     });
 
     router.push(`/confirmation?${params.toString()}`);
@@ -322,25 +340,63 @@ const CheckoutPage = () => {
                       SKU: {orderItem.product.id}
                     </p>
                     <p className="font-bold text-black mt-1">
-                      ${orderItem.product.price.toFixed(2)}
+                      £{orderItem.product.price.toFixed(2)}
                     </p>
                   </div>
                 </div>
+              </div>
+
+              {/* Discount Code */}
+              <div className="mb-6">
+                <label
+                  htmlFor="discountCode"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Discount Code
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    id="discountCode"
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-colors"
+                    placeholder="Enter code"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleApplyDiscount}
+                    className="px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors"
+                  >
+                    Apply
+                  </button>
+                </div>
+                {appliedDiscountCode && (
+                  <p className="mt-2 text-sm text-green-600 font-medium">
+                    ✓ 20% discount applied!
+                  </p>
+                )}
               </div>
 
               {/* Totals */}
               <div className="space-y-3 border-t border-gray-300 pt-4">
                 <div className="flex justify-between text-gray-700">
                   <span>Subtotal</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>£{subtotal.toFixed(2)}</span>
                 </div>
+                {appliedDiscountCode && (
+                  <div className="flex justify-between text-green-600 font-medium">
+                    <span>Discount (20%)</span>
+                    <span>-£{discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-gray-700">
                   <span>Shipping</span>
                   <span>FREE</span>
                 </div>
                 <div className="flex justify-between text-xl font-bold text-black border-t-2 border-black pt-3 mt-3">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>£{finalTotal.toFixed(2)}</span>
                 </div>
               </div>
 
