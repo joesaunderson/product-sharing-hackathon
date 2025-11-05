@@ -48,6 +48,7 @@ const ProductPage = () => {
               Get <strong>20% off</strong> with the code{" "}
               <strong>MMAPP20FKDS</strong>
             </p>
+            <div id="mmRefereeWrapper"></div>
           </div>
         )}
 
@@ -129,11 +130,19 @@ const ProductPage = () => {
         </div>
       </main>
 
-      {/* MentionMe Script */}
+      {/* Referrer Script */}
       <Script
         src="https://tag-staging2.mention-me.com/api/v2/referreroffer/mm1c6ad7e0?situation=product_page&implementation=link"
         strategy="afterInteractive"
       />
+
+      {/* Referee Script*/}
+      {referrerId && (
+        <Script
+          src="https://tag-demo.mention-me.com/api/v2/refereefind/mm1c6ad7e0?situation=product_page&implementation=link"
+          strategy="afterInteractive"
+        />
+      )}
     </>
   );
 };
