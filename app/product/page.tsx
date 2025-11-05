@@ -44,10 +44,6 @@ const ProductPage = () => {
             <p>
               <strong>🎉 Joe recommended this product!</strong>
             </p>
-            <p>
-              Get <strong>20% off</strong> with the code{" "}
-              <strong>MMAPP20FKDS</strong>
-            </p>
             <div id="mmRefereeWrapper"></div>
           </div>
         )}
