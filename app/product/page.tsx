@@ -133,14 +133,14 @@ const ProductPage = () => {
       {/* Referrer Script */}
       <Script
         src="https://tag-staging2.mention-me.com/api/v2/referreroffer/mm1c6ad7e0?situation=referrer_product_page&implementation=link"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
       />
 
       {/* Referee Script*/}
       {referrerId && (
         <Script
           src="https://tag-staging2.mention-me.com/api/v2/refereefind/mm1c6ad7e0?situation=referee_product_page&implementation=link"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
       )}
     </>
