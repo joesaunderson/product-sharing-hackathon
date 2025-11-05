@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Header } from "@/app/components";
 import type { Order } from "@/app/types";
 
-const ConfirmationPage = async () => {
+const ConfirmationPage = () => {
   const searchParams = useSearchParams();
 
   const orderNumber = searchParams.get("orderNumber") || "ORD-DEMO-001";

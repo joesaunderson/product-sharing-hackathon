@@ -7,7 +7,7 @@ import Script from "next/script";
 import { Header } from "@/app/components";
 import type { Product } from "@/app/types";
 
-const ProductPage = async () => {
+const ProductPage = () => {
   const searchParams = useSearchParams();
   const referrerId = searchParams.get("referrerId");
 
